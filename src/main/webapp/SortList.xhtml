@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:c="http://java.sun.com/jstl/core"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:t="http://myfaces.apache.org/tomahawk"
+	xmlns:v="http://corejsf.com/validator"
+	xmlns:a4j="http://richfaces.org/a4j"
+	xmlns:rich="http://richfaces.org/rich" xmlns:m="http://nmp.com.mx/jsf">
+    <h:head>
+        <title>"#{text['sort.number.pnl.title']}"</title>
+        <meta name="heading" content="#{titulo}" />
+        <h:outputScript library="js" name="validator.js"></h:outputScript>
+    </h:head>
+    
+    <h:form id="frmSort">
+    	<rich:panel id="pnlSort" header="#{text['sort.number.pnl.title']}">		
+    		<table id="tableDatos">
+    			<tr>
+    				<td>
+    					<h:outputLabel id="lblName" for="txtName"
+							value="#{text['sort.number.lbl.input.name']}:"
+							styleClass="desc" />
+    				</td>
+    				<td>
+    					<h:inputText id="txtName" 
+    						label="#{text['sort.number.lbl.input.name']}" 
+    						value="#{sortListForm.information.name}" required="true"/>
+    				</td>
+    				<td>
+    					<h:message for="txtName" style="color:red" />
+    				</td>
+    			</tr>
+    			<tr>
+    				<td>
+    					<h:outputLabel id="lblNumberList" for="txtList"
+							value="#{text['sort.number.lbl.input.list']}:"
+							styleClass="desc"/>
+    				</td>
+    				<td>
+    					<h:inputTextarea style="width: 350px;" rows="3" 
+                            id="txtList"
+                            label="#{text['sort.number.lbl.input.list']}" 
+                            value="#{sortListForm.information.numberList}" required="true"
+                            onkeypress="return esNumeroComa(event)">
+                        </h:inputTextarea>
+    				</td>
+    				<td>
+    					<h:message for="txtList" style="color:red" />
+    				</td>
+    			</tr>
+    		</table>
+    		<table id="tableDatos">
+    		<tr>
+    			<td>
+	    		<a4j:commandButton ignoreDupResponses="true" id="btnSort"
+	    			value="#{text['sort.number.btn.sortNumber']}"
+					action="#{sortListForm.sortList}"
+					render="pnlSort"
+					process="txtName, txtList"/>
+				</td>
+				<td>	
+				<a4j:commandButton ignoreDupResponses="true" id="btnClean"
+	    			value="Clean"
+					action="#{sortListForm.clean}"
+					render="pnlSort"/>
+				</td>
+    		</tr>
+    		
+			</table>	
+    		<a4j:outputPanel id="result" ajaxRendered="true">
+    			<h:panelGroup rendered="#{sortListForm.sortInformation != null}" >
+		    		<fieldset>
+						<legend><h:outputText value="#{sortListForm.sortInformation.name}"/> </legend>
+						<h:panelGrid columns="2">
+							<h:outputLabel value="#{text['sort.number.lbl.order.list']}:"
+								styleClass="desc" />
+							<h:outputText value="#{sortListForm.sortInformation.numberList}" />
+						</h:panelGrid>
+		            </fieldset>
+	            </h:panelGroup>
+	            <h:panelGroup rendered="#{sortListForm.messageError != null}" >
+	            	<div align="center">
+	            		<h:outputText value="#{sortListForm.messageError}" style="color:red"/>
+	            	</div>
+	            </h:panelGroup>
+	       </a4j:outputPanel>     
+		</rich:panel>   
+    </h:form>
+</ui:composition>
